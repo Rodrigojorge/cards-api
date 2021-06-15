@@ -7,6 +7,7 @@ export class Deck extends Entity {
     type: 'string',
     id: true,
     generated: true,
+    name: 'deck_id'
   })
   deckId?: string;
 
