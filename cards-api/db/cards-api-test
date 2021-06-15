@@ -1,0 +1,10 @@
+{
+  "ids": {
+    "Card": 2
+  },
+  "models": {
+    "Card": {
+      "AS": "{\"code\":\"AS\",\"value\":\"ACE\",\"suit\":\"SPADES\"}"
+    }
+  }
+}

@@ -8,7 +8,7 @@ export class Deck extends Entity {
     id: true,
     generated: true,
   })
-  deck_id?: string;
+  deckId?: string;
 
   @property({
     type: 'boolean',

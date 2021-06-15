@@ -4,7 +4,7 @@ import {Card} from '../models';
 const config: ModelCrudRestApiConfig = {
   model: Card,
   pattern: 'CrudRest',
-  dataSource: 'testDS',
+  dataSource: 'db',
   basePath: '/cards',
 };
 module.exports = config;
