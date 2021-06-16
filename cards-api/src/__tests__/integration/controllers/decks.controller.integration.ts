@@ -1,12 +1,13 @@
 // in your test file
 import {givenEmptyDatabase} from '../../helpers/database.helpers';
 
-describe('CardController (integration)', () => {
+describe('DeckController (integration)', () => {
 
   before(givenEmptyDatabase);
 
 
   it('', async () => {
 
-  })
+  });
+
 });

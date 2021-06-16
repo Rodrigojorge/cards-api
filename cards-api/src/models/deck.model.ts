@@ -1,4 +1,4 @@
-import {Entity, hasMany, model, property} from '@loopback/repository';
+import {Entity, model, property} from '@loopback/repository';
 import {Card} from '.';
 
 @model({settings: {strict: false}})
@@ -6,10 +6,10 @@ export class Deck extends Entity {
   @property({
     type: 'string',
     id: true,
-    generated: true,
+    generated: false,
     name: 'deck_id'
   })
-  deckId?: string;
+  deckId: string;
 
   @property({
     type: 'boolean',
@@ -23,8 +23,8 @@ export class Deck extends Entity {
   })
   remaining: number;
 
-  @hasMany(() => Card)
-  cards?: Card[];
+  @property.array(Card)
+  cards: Card[];
 
   // Define well-known properties here
 

@@ -1,34 +1,21 @@
+import {service} from '@loopback/core';
 import {
-  Count,
-  CountSchema,
-  Filter,
-  FilterExcludingWhere,
-  repository,
-  Where,
-} from '@loopback/repository';
-import {
-  post,
-  param,
   get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  getModelSchemaRef, param, post, requestBody,
+  response
 } from '@loopback/rest';
 import {Deck} from '../models';
-import {DeckRepository} from '../repositories';
+import {DeckService} from '../services';
 
 export class DeckController {
   constructor(
-    @repository(DeckRepository)
-    public deckRepository : DeckRepository,
-  ) {}
+    @service(DeckService)
+    public deckService: DeckService,
+  ) { }
 
   @post('/decks')
   @response(200, {
-    description: 'Deck model instance',
+    description: 'Create a New Deck',
     content: {'application/json': {schema: getModelSchemaRef(Deck)}},
   })
   async create(
@@ -36,68 +23,19 @@ export class DeckController {
       content: {
         'application/json': {
           schema: getModelSchemaRef(Deck, {
-            title: 'NewDeck',
-            exclude: ['deckId'],
+            title: 'NewDeck'
           }),
         },
       },
     })
-    deck: Omit<Deck, 'deckId'>,
-  ): Promise<Deck> {
-    return this.deckRepository.create(deck);
-  }
-
-  @get('/decks/count')
-  @response(200, {
-    description: 'Deck model count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async count(
-    @param.where(Deck) where?: Where<Deck>,
-  ): Promise<Count> {
-    return this.deckRepository.count(where);
-  }
-
-  @get('/decks')
-  @response(200, {
-    description: 'Array of Deck model instances',
-    content: {
-      'application/json': {
-        schema: {
-          type: 'array',
-          items: getModelSchemaRef(Deck, {includeRelations: true}),
-        },
-      },
-    },
-  })
-  async find(
-    @param.filter(Deck) filter?: Filter<Deck>,
-  ): Promise<Deck[]> {
-    return this.deckRepository.find(filter);
-  }
-
-  @patch('/decks')
-  @response(200, {
-    description: 'Deck PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async updateAll(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Deck, {partial: true}),
-        },
-      },
-    })
     deck: Deck,
-    @param.where(Deck) where?: Where<Deck>,
-  ): Promise<Count> {
-    return this.deckRepository.updateAll(deck, where);
+  ): Promise<Deck> {
+    return this.deckService.createNewDeck(deck.deckId, deck.shuffled, deck.remaining);
   }
 
   @get('/decks/{id}')
   @response(200, {
-    description: 'Deck model instance',
+    description: 'Open a Deck',
     content: {
       'application/json': {
         schema: getModelSchemaRef(Deck, {includeRelations: true}),
@@ -105,46 +43,19 @@ export class DeckController {
     },
   })
   async findById(
-    @param.path.string('id') id: string,
-    @param.filter(Deck, {exclude: 'where'}) filter?: FilterExcludingWhere<Deck>
-  ): Promise<Deck> {
-    return this.deckRepository.findById(id, filter);
+    @param.path.string('id') id: string): Promise<Deck> {
+    return this.deckService.openDeck(id);
   }
 
-  @patch('/decks/{id}')
-  @response(204, {
-    description: 'Deck PATCH success',
+  @post('/decks/{id}')
+  @response(200, {
+    description: 'Draw a Card',
   })
-  async updateById(
+  async drawCard(
     @param.path.string('id') id: string,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Deck, {partial: true}),
-        },
-      },
-    })
-    deck: Deck,
+    @param.query.string('count') count: number
   ): Promise<void> {
-    await this.deckRepository.updateById(id, deck);
+    await this.deckService.drawCard(id, count);
   }
 
-  @put('/decks/{id}')
-  @response(204, {
-    description: 'Deck PUT success',
-  })
-  async replaceById(
-    @param.path.string('id') id: string,
-    @requestBody() deck: Deck,
-  ): Promise<void> {
-    await this.deckRepository.replaceById(id, deck);
-  }
-
-  @del('/decks/{id}')
-  @response(204, {
-    description: 'Deck DELETE success',
-  })
-  async deleteById(@param.path.string('id') id: string): Promise<void> {
-    await this.deckRepository.deleteById(id);
-  }
 }
