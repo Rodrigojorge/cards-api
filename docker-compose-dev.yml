@@ -7,6 +7,8 @@ services:
       context: .
       
     command: tail -F keeprunning
-    working_dir: /var/app/
+    working_dir: /var/app/api
     volumes:
       - .:/var/app:cached
+
+      

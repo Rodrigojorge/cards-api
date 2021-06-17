@@ -1,14 +1,14 @@
-import {Client, expect} from '@loopback/testlab';
-import {v4 as uuid} from 'uuid';
-import {CardsApiApplication} from '../../application';
-import {setupApplication} from './test-helper';
+import { Client, expect } from '@loopback/testlab';
+import { v4 as uuid } from 'uuid';
+import { CardsApiApplication } from '../../application';
+import { setupApplication } from './test-helper';
 
 describe('DeckController (acceptance)', () => {
   let app: CardsApiApplication;
   let client: Client;
 
   before('setupApplication', async () => {
-    ({app, client} = await setupApplication());
+    ({ app, client } = await setupApplication());
   });
 
   after(async () => {
@@ -38,19 +38,19 @@ describe('DeckController (acceptance)', () => {
     });
   });
 
-  it('it should fail with a null id - invokes POST /decks', async () => {
-    const bodyIdNull = {
-      deckId: null
-    }
-    const res = await client
-      .post('/decks')
-      .send(bodyIdNull)
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200);
-
-    expect(res).to.be.rejectedWith('deckId is required');
-  });
+  /* it('it should fail with a null id - invokes POST /decks', async () => {
+     const bodyIdNull = {
+       deckId: null
+     }
+     const res = await client
+       .post('/decks')
+       .send(bodyIdNull)
+       .set('Accept', 'application/json')
+       .expect('Content-Type', /json/)
+       .expect(200);
+ 
+     expect(res).to.be.rejectedWith('deckId is required');
+   });*/
 
 
   it('Open a Deck - invokes GET /decks/{id}', async () => {
