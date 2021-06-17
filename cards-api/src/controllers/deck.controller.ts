@@ -4,7 +4,7 @@ import {
   getModelSchemaRef, param, post, requestBody,
   response
 } from '@loopback/rest';
-import {Deck} from '../models';
+import {Card, Deck} from '../models';
 import {DeckService} from '../services';
 
 export class DeckController {
@@ -47,15 +47,15 @@ export class DeckController {
     return this.deckService.openDeck(id);
   }
 
-  @post('/decks/{id}')
+  @get('/decks/{id}/cards')
   @response(200, {
-    description: 'Draw a Card',
+    description: 'Draw a Card(s)',
   })
   async drawCard(
     @param.path.string('id') id: string,
     @param.query.string('count') count: number
-  ): Promise<void> {
-    await this.deckService.drawCard(id, count);
+  ): Promise<Card[]> {
+    return this.deckService.drawCard(id, count);
   }
 
 }

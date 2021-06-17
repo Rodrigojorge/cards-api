@@ -11,14 +11,14 @@ export class DeckService {
 
   /**
    *
-   * Create a standard 52-card deck of French playing cards,
+   * Creates a standard 52-card deck of French playing cards,
    * it includes all thirteen ranks in each of the four suits:
    *  spades (),
    *  clubs (),
    *  diamonds (),
    *  and hearts ().
-   *  You don’t need to worry about Joker cards for this assignment.
-   *  You should allow the following options to the request:
+   *  There is no Joker cards.
+   *  It allows the following options to the request:
    *      The deck id (UUID)
    *      The deck properties like shuffled (boolean)
    *      and total cards remaining in this deck (integer)
@@ -43,6 +43,13 @@ export class DeckService {
     deck.cards = [];
 
     this.addCards(deck);
+
+    if (shuffled) {
+      this.shuffleDeck(deck);
+    }
+
+    //cut the deck to the remaining desired size
+    deck.cards = deck.cards.slice(0, deck.remaining);
 
     await this.deckRepository.create(deck);
 
@@ -95,13 +102,13 @@ export class DeckService {
    *
    * @param deck
    */
-  async shuffleDeck(deck: Deck) {
-    const shuffledCards = deck.card.sort(() => Math.random() - 0.5);
+  private shuffleDeck(deck: Deck) {
+    const shuffledCards = deck.cards?.sort(() => Math.random() - 0.5);
     deck.cards = shuffledCards;
   }
 
   /**
-   * Return a given deck by its UUID.
+   * Returns a given deck by its UUID.
    *
    * If the deck was not passed over or is invalid it should return an error.
    *
@@ -117,6 +124,11 @@ export class DeckService {
    * @returns
    */
   async openDeck(deckId: string): Promise<Deck> {
+
+
+    if (deckId == null) {
+      throw new Error("deckId is required")
+    }
 
     return this.deckRepository.findById(deckId);
   }
@@ -144,7 +156,7 @@ export class DeckService {
 
     let i = 1;
     while (i <= count) {
-      const card = deck.cards.shift();
+      const card = deck.cards?.shift();
       if (card != null)
         cardsDrawn.push(card);
 

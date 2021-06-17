@@ -13,45 +13,54 @@ describe('DeckService (unit)', () => {
   const deckService = new DeckService(new DeckRepository(ds));
 
   it('it should create a deck', async () => {
-
     const id = uuid();
     const deck = await deckService.createNewDeck(id, false);
     expect(deck.deckId).to.be.eql(id);
-
   });
 
   it('it should create a deck of 52 cards', async () => {
     const id = uuid();
     await deckService.createNewDeck(id, false);
     expect((await deckService.openDeck(id)).cards?.length).to.be.eql(52);
-
   });
 
-  /*it('it should not open cards from an invalid deck', async () => {
-    expect("1").to.be.eql(2);
+  it('it should create a deck of a specific number of cards', async () => {
+    const id = uuid();
+    await deckService.createNewDeck(id, false, 30);
+    expect((await deckService.openDeck(id)).cards?.length).to.be.eql(30);
+  });
+
+  it('it should create a shuffled a deck', async () => {
+    const id = uuid();
+    await deckService.createNewDeck(id, true);
+  });
+
+  it('it should not open cards from an invalid deck', async () => {
+    const id = "invalid";
+    await expect(deckService.openDeck(id)).to.be.rejected();
   });
 
   it('it should draw a card', async () => {
-    expect("1").to.be.eql(2);
+    const id = uuid();
+    await deckService.createNewDeck(id, false);
+    expect((await deckService.drawCard(id)).length).to.be.eql(1);
   });
 
   it('it should draw an exact number of cards', async () => {
-    expect("1").to.be.eql(2);
+    const id = uuid();
+    await deckService.createNewDeck(id, false);
+    expect((await deckService.drawCard(id, 7)).length).to.be.eql(7);
   });
 
   it('it should not draw more than the remaining cards', async () => {
-    expect("1").to.be.eql(2);
+    const id = uuid();
+    await deckService.createNewDeck(id, false, 6);
+    await expect(deckService.drawCard(id, 7)).to.be.rejected();
   });
-
-
-
 
   it('it should not draw cards from an invalid deck', async () => {
-    expect("1").to.be.eql(2);
+    const id = "invalid";
+    await expect(deckService.drawCard(id)).to.be.rejected();
   });
-
-  it('it should shuffle a deck', async () => {
-    expect("1").to.be.eql(2);
-  }); */
 
 });
