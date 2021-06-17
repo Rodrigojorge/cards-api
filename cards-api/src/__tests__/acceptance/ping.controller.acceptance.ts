@@ -2,7 +2,7 @@ import {Client, expect} from '@loopback/testlab';
 import {CardsApiApplication} from '../..';
 import {setupApplication} from './test-helper';
 
-describe('PingController', () => {
+describe('PingController (acceptance)', () => {
   let app: CardsApiApplication;
   let client: Client;
 

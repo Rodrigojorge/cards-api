@@ -30,7 +30,11 @@ export class DeckController {
     })
     deck: Deck,
   ): Promise<Deck> {
-    return this.deckService.createNewDeck(deck.deckId, deck.shuffled, deck.remaining);
+    return this.deckService.createNewDeck(
+      deck.deckId,
+      deck.shuffled,
+      deck.remaining
+    );
   }
 
   @get('/decks/{id}')

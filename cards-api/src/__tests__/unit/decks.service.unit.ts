@@ -37,7 +37,7 @@ describe('DeckService (unit)', () => {
 
   it('it should not open cards from an invalid deck', async () => {
     const id = "invalid";
-    await expect(deckService.openDeck(id)).to.be.rejected();
+    await expect(deckService.openDeck(id)).to.be.rejectedWith('Entity not found: Deck with id "invalid"');
   });
 
   it('it should draw a card', async () => {
@@ -55,12 +55,12 @@ describe('DeckService (unit)', () => {
   it('it should not draw more than the remaining cards', async () => {
     const id = uuid();
     await deckService.createNewDeck(id, false, 6);
-    await expect(deckService.drawCard(id, 7)).to.be.rejected();
+    await expect(deckService.drawCard(id, 7)).to.be.rejectedWith('Not enough cards');
   });
 
   it('it should not draw cards from an invalid deck', async () => {
     const id = "invalid";
-    await expect(deckService.drawCard(id)).to.be.rejected();
+    await expect(deckService.drawCard(id)).to.be.rejectedWith('Entity not found: Deck with id "invalid"');
   });
 
 });

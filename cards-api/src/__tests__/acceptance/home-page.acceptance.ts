@@ -2,7 +2,7 @@ import {Client} from '@loopback/testlab';
 import {CardsApiApplication} from '../..';
 import {setupApplication} from './test-helper';
 
-describe('HomePage', () => {
+describe('HomePage (acceptance)', () => {
   let app: CardsApiApplication;
   let client: Client;
 

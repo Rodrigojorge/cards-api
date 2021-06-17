@@ -3,6 +3,10 @@ import {repository} from '@loopback/repository';
 import {Card, Deck} from '../models';
 import {DeckRepository} from '../repositories';
 
+const DECK_ID_REQUIRED = "deckId is required";
+
+const NOT_ENOUGH_CARDS = 'Not enough cards';
+
 @injectable({scope: BindingScope.SINGLETON})
 export class DeckService {
 
@@ -125,9 +129,8 @@ export class DeckService {
    */
   async openDeck(deckId: string): Promise<Deck> {
 
-
     if (deckId == null) {
-      throw new Error("deckId is required")
+      throw new Error(DECK_ID_REQUIRED)
     }
 
     return this.deckRepository.findById(deckId);
@@ -148,10 +151,14 @@ export class DeckService {
   async drawCard(deckId: string, count = 1): Promise<Card[]> {
     const cardsDrawn: Card[] = [];
 
+    if (deckId == null) {
+      throw new Error(DECK_ID_REQUIRED)
+    }
+
     const deck = await this.deckRepository.findById(deckId);
 
     if (count > deck.remaining) {
-      throw Error('Not enough cards.');
+      throw Error(NOT_ENOUGH_CARDS);
     }
 
     let i = 1;
