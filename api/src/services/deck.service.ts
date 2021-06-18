@@ -3,6 +3,7 @@ import { repository } from '@loopback/repository';
 import { BusinessException } from '../exception/business-exception';
 import { Card, Deck } from '../models';
 import { DeckRepository } from '../repositories';
+import { v4 as uuid } from 'uuid';
 
 const DECK_ID_REQUIRED = "deckId is required";
 
@@ -42,6 +43,9 @@ export class DeckService {
 
     const deck = new Deck();
 
+    if (deckId == null) {
+      deckId = uuid();
+    }
     deck.deckId = deckId;
     deck.shuffled = shuffled;
     deck.remaining = remaining;
