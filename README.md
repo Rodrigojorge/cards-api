@@ -18,13 +18,12 @@ The following tests were implemented:
 
 ```bash
 
-
   DeckController (acceptance)
-    ✔ it should create a new deck - invokes POST /decks (123ms)
+    ✔ it should create a new deck - invokes POST /decks (163ms)
     ✔ it should fail with a null id - invokes POST /decks
-    ✔ it should open a deck - invokes GET /decks/{id} (52ms)
+    ✔ it should open a deck - invokes GET /decks/{id} (64ms)
     ✔ it should not open an invalid deck - invokes GET /decks/{id}/cards
-    ✔ it should draw a card - invokes GET /decks/{id}/cards
+    ✔ it should draw a card - invokes GET /decks/{id}/cards (41ms)
     ✔ it should draw 5 cards - invokes GET /decks/{id}/cards
     ✔ it should not draw a card from an invalid deck - invokes GET /decks/{id}/cards
 
@@ -39,7 +38,6 @@ The following tests were implemented:
     ✔ it should create a deck
     ✔ it should create a deck of 52 cards
     ✔ it should create a deck of a specific number of cards
-    ✔ it should create a shuffled a deck
     ✔ it should not open cards from an invalid deck
     ✔ it should draw a card
     ✔ it should draw an exact number of cards
@@ -47,7 +45,7 @@ The following tests were implemented:
     ✔ it should not draw cards from an invalid deck
 
 
-  19 passing (623ms)
+  18 passing (648ms)
 ```
 
 ## Run the cards-api

@@ -1,8 +1,8 @@
-import {expect} from '@loopback/testlab';
-import {v4 as uuid} from 'uuid';
-import {DeckRepository} from '../../repositories';
-import {DeckService} from '../../services';
-import {getDs, givenEmptyDatabase} from '../helpers/database.helpers';
+import { expect } from '@loopback/testlab';
+import { v4 as uuid } from 'uuid';
+import { DeckRepository } from '../../repositories';
+import { DeckService } from '../../services';
+import { getDs, givenEmptyDatabase } from '../helpers/database.helpers';
 
 describe('DeckService (unit)', () => {
 
@@ -28,11 +28,6 @@ describe('DeckService (unit)', () => {
     const id = uuid();
     await deckService.createNewDeck(id, false, 30);
     expect((await deckService.openDeck(id)).cards?.length).to.be.eql(30);
-  });
-
-  it('it should create a shuffled a deck', async () => {
-    const id = uuid();
-    await deckService.createNewDeck(id, true);
   });
 
   it('it should not open cards from an invalid deck', async () => {
