@@ -1,7 +1,7 @@
-import {Entity, model, property} from '@loopback/repository';
-import {Card} from '.';
+import { Entity, model, property } from '@loopback/repository';
+import { Card } from '.';
 
-@model({settings: {strict: false}})
+@model({ settings: { strict: false } })
 export class Deck extends Entity {
   @property({
     type: 'string',
@@ -20,6 +20,10 @@ export class Deck extends Entity {
   @property({
     type: 'number',
     required: true,
+    jsonSchema: {
+      maximum: 52,
+      minimum: 1,
+    },
   })
   remaining: number;
 

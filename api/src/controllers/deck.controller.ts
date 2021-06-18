@@ -1,11 +1,11 @@
-import {service} from '@loopback/core';
+import { service } from '@loopback/core';
 import {
   get,
   getModelSchemaRef, param, post, requestBody,
   response
 } from '@loopback/rest';
-import {Card, Deck} from '../models';
-import {DeckService} from '../services';
+import { Card, Deck } from '../models';
+import { DeckService } from '../services';
 
 export class DeckController {
   constructor(
@@ -16,7 +16,7 @@ export class DeckController {
   @post('/decks')
   @response(200, {
     description: 'Create a New Deck',
-    content: {'application/json': {schema: getModelSchemaRef(Deck)}},
+    content: { 'application/json': { schema: getModelSchemaRef(Deck) } },
   })
   async create(
     @requestBody({
@@ -42,12 +42,12 @@ export class DeckController {
     description: 'Open a Deck',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(Deck, {includeRelations: true}),
+        schema: getModelSchemaRef(Deck, { includeRelations: true }),
       },
     },
   })
-  async findById(
-    @param.path.string('id') id: string): Promise<Deck> {
+  async findById(@param.path.string('id') id: string): Promise<Deck> {
+
     return this.deckService.openDeck(id);
   }
 
@@ -59,6 +59,7 @@ export class DeckController {
     @param.path.string('id') id: string,
     @param.query.string('count') count: number
   ): Promise<Card[]> {
+
     return this.deckService.drawCard(id, count);
   }
 

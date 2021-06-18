@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { CardsApiApplication } from '../../application';
 import { setupApplication } from './test-helper';
 
+
 describe('DeckController (acceptance)', () => {
   let app: CardsApiApplication;
   let client: Client;
@@ -38,22 +39,22 @@ describe('DeckController (acceptance)', () => {
     });
   });
 
-  /* it('it should fail with a null id - invokes POST /decks', async () => {
-     const bodyIdNull = {
-       deckId: null
-     }
-     const res = await client
-       .post('/decks')
-       .send(bodyIdNull)
-       .set('Accept', 'application/json')
-       .expect('Content-Type', /json/)
-       .expect(200);
- 
-     expect(res).to.be.rejectedWith('deckId is required');
-   });*/
+  it('it should fail with a null id - invokes POST /decks', async () => {
+    const bodyIdNull = {
+      deckId: null
+    }
+
+    await client
+      .post('/decks')
+      .send(bodyIdNull)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(422)
+
+  });
 
 
-  it('Open a Deck - invokes GET /decks/{id}', async () => {
+  it('it should open a deck - invokes GET /decks/{id}', async () => {
     const res = await client
       .get(`/decks/${id}`)
       .set('Accept', 'application/json')
@@ -63,7 +64,18 @@ describe('DeckController (acceptance)', () => {
     expect(res.body.cards.length).to.be.eql(30);
   });
 
-  it('Draw a Card - invokes GET /decks/{id}/cards', async () => {
+  it('it should not open an invalid deck - invokes GET /decks/{id}/cards', async () => {
+    await client
+      .get(`/decks/invalid`)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(404);
+
+  });
+
+
+
+  it('it should draw a card - invokes GET /decks/{id}/cards', async () => {
     const res = await client
       .get(`/decks/${id}/cards`)
       .set('Accept', 'application/json')
@@ -73,7 +85,7 @@ describe('DeckController (acceptance)', () => {
     expect(res.body.length).to.be.eql(1);
   });
 
-  it('Draw 5 Cards - invokes GET /decks/{id}/cards', async () => {
+  it('it should draw 5 cards - invokes GET /decks/{id}/cards', async () => {
     const res = await client
       .get(`/decks/${id}/cards?count=5`)
       .set('Accept', 'application/json')
@@ -81,5 +93,14 @@ describe('DeckController (acceptance)', () => {
       .expect(200);
 
     expect(res.body.length).to.be.eql(5);
+  });
+
+  it('it should not draw a card from an invalid deck - invokes GET /decks/{id}/cards', async () => {
+    await client
+      .get(`/decks/invalid/cards?count=5`)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(404);
+
   });
 });

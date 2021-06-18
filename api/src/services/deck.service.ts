@@ -1,13 +1,14 @@
-import { /* inject, */ BindingScope, injectable} from '@loopback/core';
-import {repository} from '@loopback/repository';
-import {Card, Deck} from '../models';
-import {DeckRepository} from '../repositories';
+import { /* inject, */ BindingScope, injectable } from '@loopback/core';
+import { repository } from '@loopback/repository';
+import { BusinessException } from '../exception/business-exception';
+import { Card, Deck } from '../models';
+import { DeckRepository } from '../repositories';
 
 const DECK_ID_REQUIRED = "deckId is required";
 
 const NOT_ENOUGH_CARDS = 'Not enough cards';
 
-@injectable({scope: BindingScope.SINGLETON})
+@injectable({ scope: BindingScope.SINGLETON })
 export class DeckService {
 
   constructor(@repository(DeckRepository)
@@ -130,7 +131,7 @@ export class DeckService {
   async openDeck(deckId: string): Promise<Deck> {
 
     if (deckId == null) {
-      throw new Error(DECK_ID_REQUIRED)
+      throw new BusinessException(DECK_ID_REQUIRED)
     }
 
     return this.deckRepository.findById(deckId);
@@ -152,13 +153,13 @@ export class DeckService {
     const cardsDrawn: Card[] = [];
 
     if (deckId == null) {
-      throw new Error(DECK_ID_REQUIRED)
+      throw new BusinessException(DECK_ID_REQUIRED)
     }
 
     const deck = await this.deckRepository.findById(deckId);
 
     if (count > deck.remaining) {
-      throw Error(NOT_ENOUGH_CARDS);
+      throw new BusinessException(NOT_ENOUGH_CARDS);
     }
 
     let i = 1;
